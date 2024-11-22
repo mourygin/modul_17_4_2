@@ -1,8 +1,8 @@
-from app.backend.db import Base
+from backend.db import Base
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
-from app.models import *
+from models import *
 
 class Task(Base):
     __tablename__ = 'tasks'

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
-from app.backend.db_depends import get_db
+from backend.db_depends import get_db
 from typing import Annotated
-from app.models import Task
-from app.models import User
-from app.schemas import CreateTask, UpdateTask
+from models import Task
+from models import User
+from schemas import CreateTask, UpdateTask
 from sqlalchemy import insert, select, update, delete
 from slugify import slugify
 
@@ -17,7 +17,8 @@ async def all_tasks(db: Annotated[Session, Depends(get_db)]):
 
 @router.get('/task_id')
 async def task_by_id(db: Annotated[Session, Depends(get_db)], task_id: int):
-    task = db.scalars(select(Task).where(Task.id == task_id)).all()
+    # task = db.scalars(select(Task).where(Task.id == task_id)).all()
+    task = db.scalar(select(Task).where(Task.id == task_id))
     if task is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -51,7 +52,8 @@ async def create_task(db: Annotated[Session, Depends(get_db)], create_task: Crea
 
 @router.put('/update')
 async def update_task(db: Annotated[Session, Depends(get_db)], task_id: int, update_task: UpdateTask):
-    task = db.scalars(select(Task).where(Task.id == task_id))
+    # task = db.scalars(select(Task).where(Task.id == task_id))
+    task = db.scalar(select(Task).where(Task.id == task_id))
     if task is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -74,7 +76,7 @@ async def update_task(db: Annotated[Session, Depends(get_db)], task_id: int, upd
 
 @router.delete('/delete')
 async def delete_task(db: Annotated[Session, Depends(get_db)], task_id: int):
-    task = db.scalars(select(Task).where(Task.id == task_id))
+    task = db.scalar(select(Task).where(Task.id == task_id))
     if task is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

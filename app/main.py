@@ -2,8 +2,8 @@ from fastapi import FastAPI, Path, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from typing import Annotated, List
 import sys
-from app.routers import task
-from app.routers import user
+from routers import task
+from routers import user
 # from routers import task
 # from routers import user
 
